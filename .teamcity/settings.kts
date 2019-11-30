@@ -25,4 +25,60 @@ To debug in IntelliJ Idea, open the 'Maven Projects' tool window (View
 version = "2019.2"
 
 project {
+
+    project(ProjectA)
+    project(ProjectB)
+
+    buildType(StartingBuild)
 }
+
+object StartingBuild : BuildType({
+    name = "Starting build"
+})
+
+object ProjectA : Project({
+    name = "Project A"
+
+    project(ProjectA_Subproject)
+
+    buildType(ProjectA_BuildA)
+    buildType(ProjectA_BuildB)
+})
+
+object ProjectA_BuildA : BuildType({
+    name = "Build A"
+})
+
+object ProjectA_BuildB : BuildType({
+    name = "Build B"
+})
+
+object ProjectB : Project({
+    name = "Project B"
+
+    buildType(ProjectB_BuildA)
+    buildType(ProjectB_BuildB)
+})
+
+object ProjectB_BuildA : BuildType({
+    name = "Build A"
+})
+
+object ProjectB_BuildB : BuildType({
+    name = "Build B"
+})
+
+object ProjectA_Subproject : Project({
+    name = "Subproject"
+
+    buildType(ProjectA_Subproject_BuildA)
+    buildType(ProjectA_Subproject_BuildB)
+})
+
+object ProjectA_Subproject_BuildA : BuildType({
+    name = "Build A"
+})
+
+object ProjectA_Subproject_BuildB : BuildType({
+    name = "Build B"
+})
