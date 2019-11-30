@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <name>Pipeline Config DSL Script</name>
   <groupId>ProjectWithPipeline</groupId>
-  <artifactId>Pipeline_dsl</artifactId>
+  <artifactId>ProjectWithPipeline_dsl</artifactId>
   <version>1.0-SNAPSHOT</version>
 
   <parent>
