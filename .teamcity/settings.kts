@@ -10,12 +10,6 @@ project {
     buildType(StartingBuild)
 }
 
-sequential {
-    buildType(ProjectA_BuildA)
-    buildType(ProjectA_BuildB)
-    buildType(ProjectA_BuildC)
-}
-
 object StartingBuild : BuildType({
     name = "Starting build"
 })
@@ -71,3 +65,9 @@ object ProjectA_Subproject_BuildA : BuildType({
 object ProjectA_Subproject_BuildB : BuildType({
     name = "Build B"
 })
+
+sequential {
+    buildType(ProjectA_BuildA)
+    buildType(ProjectA_BuildB)
+    buildType(ProjectA_BuildC)
+}
