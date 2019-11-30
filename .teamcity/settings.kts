@@ -9,11 +9,14 @@ project {
 
     buildType(StartingBuild)
 
-    sequential {
-        buildType(ProjectA_BuildA)
-        buildType(ProjectA_BuildB)
-        buildType(ProjectA_BuildC)
-    }
+    seq.buildTypes().forEach { buildType(it) }
+
+}
+
+sequential {
+    buildType(ProjectA_BuildA)
+    buildType(ProjectA_BuildB)
+    buildType(ProjectA_BuildC)
 }
 
 object StartingBuild : BuildType({
@@ -60,14 +63,25 @@ object ProjectB_BuildB : BuildType({
 object ProjectA_Subproject : Project({
     name = "Subproject"
 
-    buildType(ProjectA_Subproject_BuildA)
-    buildType(ProjectA_Subproject_BuildB)
+//    buildType(ProjectA_Subproject_BuildA)
+//    buildType(ProjectA_Subproject_BuildB)
 })
 
-object ProjectA_Subproject_BuildA : BuildType({
-    name = "Build A"
-})
-
-object ProjectA_Subproject_BuildB : BuildType({
-    name = "Build B"
-})
+val seq = sequential {
+    buildType {
+        id("ProjectA_Subproject_BuildA")
+        name = "Build A"
+    }
+    buildType {
+        id("ProjectA_Subproject_BuildB")
+        name = "Build B"
+    }
+}
+//
+//object ProjectA_Subproject_BuildA : BuildType({
+//    name = "Build A"
+//})
+//
+//object ProjectA_Subproject_BuildB : BuildType({
+//    name = "Build B"
+//})
