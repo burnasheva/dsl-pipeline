@@ -21,6 +21,7 @@ object ProjectA : Project({
 
     buildType(ProjectA_BuildA)
     buildType(ProjectA_BuildB)
+    buildType(ProjectA_BuildC)
 })
 
 object ProjectA_BuildA : BuildType({
@@ -29,6 +30,10 @@ object ProjectA_BuildA : BuildType({
 
 object ProjectA_BuildB : BuildType({
     name = "Build B"
+})
+
+object ProjectA_BuildC : BuildType({
+    name = "Build C"
 })
 
 object ProjectB : Project({
