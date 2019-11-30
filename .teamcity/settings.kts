@@ -29,12 +29,12 @@ project {
     project(ProjectA)
     project(ProjectB)
 
-    buildType(StartingBuild)
+//    buildType(StartingBuild)
 }
-
-object StartingBuild : BuildType({
-    name = "Starting build"
-})
+//
+//object StartingBuild : BuildType({
+//    name = "Starting build"
+//})
 
 object ProjectA : Project({
     name = "Project A"
