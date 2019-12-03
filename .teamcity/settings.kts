@@ -25,9 +25,20 @@ object ProjectA : Project({
     buildType(ProjectA_BuildC)
 
     sequential {
-        buildType(ProjectA_BuildA)
-        buildType(ProjectA_BuildB)
-        buildType(ProjectA_BuildC)
+        parallel {
+            buildType(ProjectA_Subproject_BuildA)
+            buildType(ProjectA_Subproject_BuildB)
+        }
+        parallel {
+            buildType(ProjectB_BuildA)
+            buildType(ProjectB_BuildB)
+        }
+        parallel {
+            buildType(ProjectA_BuildA)
+            buildType(ProjectA_BuildB)
+            buildType(ProjectA_BuildC)
+        }
+        buildType(StartingBuild)
     }
 })
 
