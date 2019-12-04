@@ -17,7 +17,6 @@ object ProjectC : Project({
     name = "Project C"
 
     sequential {
-        buildType(StartingBuild)
         parallel {
             buildType(ProjectA_BuildA) {
                 produces("fileA.txt")
@@ -48,6 +47,7 @@ object ProjectC : Project({
             }
             buildType(ProjectA_Subproject_BuildB)
         }
+        buildType(StartingBuild)
     }
 })
 
@@ -64,22 +64,6 @@ object ProjectA : Project({
     buildType(ProjectA_BuildB)
     buildType(ProjectA_BuildC)
 
-//    sequential {
-//        parallel {
-//            buildType(ProjectA_Subproject_BuildA)
-//            buildType(ProjectA_Subproject_BuildB)
-//        }
-//        parallel {
-//            buildType(ProjectB_BuildA)
-//            buildType(ProjectB_BuildB)
-//        }
-//        parallel {
-//            buildType(ProjectA_BuildA)
-//            buildType(ProjectA_BuildB)
-//            buildType(ProjectA_BuildC)
-//        }
-//        buildType(StartingBuild)
-//    }
 })
 
 object ProjectA_BuildA : BuildType({
