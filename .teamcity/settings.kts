@@ -10,7 +10,7 @@ project {
     subProject(ProjectC)
 
     buildType(StartingBuild)
-
+    buildType(AnotherBuild)
 }
 
 object ProjectC : Project({
@@ -35,7 +35,7 @@ object ProjectC : Project({
             produces("fileC.txt")
         }
         buildType(ProjectB_BuildB) {
-            dependsOn(StartingBuild)
+            dependsOn(AnotherBuild)
         }
         parallel {
             buildType(ProjectA_Subproject_BuildA) {
@@ -53,6 +53,10 @@ object ProjectC : Project({
 
 object StartingBuild : BuildType({
     name = "Starting build"
+})
+
+object AnotherBuild : BuildType({
+    name = "Another build"
 })
 
 object ProjectA : Project({
