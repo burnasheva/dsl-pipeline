@@ -57,6 +57,8 @@ object StartingBuild : BuildType({
 
 object AnotherBuild : BuildType({
     name = "Another build"
+
+    produces("something.txt")
 })
 
 object ProjectA : Project({
