@@ -6,10 +6,49 @@ project {
 
     subProject(ProjectA)
     subProject(ProjectB)
+    subProject(ProjectC)
 
     buildType(StartingBuild)
 
 }
+
+object ProjectC : Project({
+    name = "Project C"
+
+    sequential {
+        buildType(StartingBuild)
+        parallel {
+            buildType(ProjectA_BuildA) {
+                produces("fileA.txt")
+            }
+            buildType(ProjectA_BuildB) {
+                produces("fileB.txt")
+            }
+            buildType(ProjectA_BuildC) {
+                produces("fileC.txt")
+            }
+        }
+        buildType(ProjectB_BuildA) {
+            consumes(ProjectA_BuildA, "fileA.txt")
+            consumes(ProjectA_BuildB, "fileB.txt")
+            consumes(ProjectA_BuildC, "fileC.txt")
+            produces("fileC.txt")
+        }
+        buildType(ProjectB_BuildB) {
+            dependsOn(StartingBuild)
+        }
+        parallel {
+            buildType(ProjectA_Subproject_BuildA) {
+                consumes(ProjectB_BuildA, "fileC.txt") {
+                    cleanDestination = true
+                    artifactRules = "fileC.txt=>subforlder"
+                    sameChainOrLastFinished()
+                }
+            }
+            buildType(ProjectA_Subproject_BuildB)
+        }
+    }
+})
 
 object StartingBuild : BuildType({
     name = "Starting build"
@@ -24,22 +63,22 @@ object ProjectA : Project({
     buildType(ProjectA_BuildB)
     buildType(ProjectA_BuildC)
 
-    sequential {
-        parallel {
-            buildType(ProjectA_Subproject_BuildA)
-            buildType(ProjectA_Subproject_BuildB)
-        }
-        parallel {
-            buildType(ProjectB_BuildA)
-            buildType(ProjectB_BuildB)
-        }
-        parallel {
-            buildType(ProjectA_BuildA)
-            buildType(ProjectA_BuildB)
-            buildType(ProjectA_BuildC)
-        }
-        buildType(StartingBuild)
-    }
+//    sequential {
+//        parallel {
+//            buildType(ProjectA_Subproject_BuildA)
+//            buildType(ProjectA_Subproject_BuildB)
+//        }
+//        parallel {
+//            buildType(ProjectB_BuildA)
+//            buildType(ProjectB_BuildB)
+//        }
+//        parallel {
+//            buildType(ProjectA_BuildA)
+//            buildType(ProjectA_BuildB)
+//            buildType(ProjectA_BuildC)
+//        }
+//        buildType(StartingBuild)
+//    }
 })
 
 object ProjectA_BuildA : BuildType({
