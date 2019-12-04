@@ -53,6 +53,7 @@ object ProjectC : Project({
 
 object StartingBuild : BuildType({
     name = "Starting build"
+    consumes(AnotherBuild, "something.txt")
 })
 
 object AnotherBuild : BuildType({
