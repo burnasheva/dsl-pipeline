@@ -1,4 +1,5 @@
 import jetbrains.buildServer.configs.kotlin.v2019_2.*
+import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.script
 
 version = "2019.2"
 
@@ -83,14 +84,44 @@ object ProjectA : Project({
 
 object ProjectA_BuildA : BuildType({
     name = "Build A"
+
+    vcs {
+        cleanCheckout = true
+    }
+
+    steps {
+        script {
+            scriptContent = "touch fileA.txt"
+        }
+    }
 })
 
 object ProjectA_BuildB : BuildType({
     name = "Build B"
+
+    vcs {
+        cleanCheckout = true
+    }
+
+    steps {
+        script {
+            scriptContent = "touch fileB.txt"
+        }
+    }
 })
 
 object ProjectA_BuildC : BuildType({
     name = "Build C"
+
+    vcs {
+        cleanCheckout = true
+    }
+
+    steps {
+        script {
+            scriptContent = "touch fileC.txt"
+        }
+    }
 })
 
 object ProjectB : Project({
