@@ -48,6 +48,12 @@ object StartingBuild : BuildType({
 object AnotherBuild : BuildType({
     name = "Another build"
     artifactRules = "something.txt"
+
+    steps {
+        script {
+            scriptContent = "touch something.txt"
+        }
+    }
 })
 
 object ProjectA : Project({
