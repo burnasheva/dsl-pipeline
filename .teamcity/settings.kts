@@ -18,34 +18,18 @@ object ProjectC : Project({
 
     sequential {
         parallel {
-            buildType(ProjectA_BuildA) {
-                produces("fileA.txt")
-            }
-            buildType(ProjectA_BuildB) {
-                produces("fileB.txt")
-            }
-            buildType(ProjectA_BuildC) {
-                produces("fileC.txt")
-            }
+            buildType(ProjectA_BuildA)
+            buildType(ProjectA_BuildB)
+            buildType(ProjectA_BuildC)
         }
-        buildType(ProjectB_BuildA) {
-            consumes(ProjectA_BuildA, "fileA.txt")
-            consumes(ProjectA_BuildB, "fileB.txt")
-            consumes(ProjectA_BuildC, "fileC.txt")
-            produces("fileC.txt")
-        }
-        buildType(ProjectB_BuildB) {
+        buildType(ProjectB_BuildA)
+        sequential {
             dependsOn(AnotherBuild)
-        }
-        parallel {
-            buildType(ProjectA_Subproject_BuildA) {
-                consumes(ProjectB_BuildA, "fileC.txt") {
-                    cleanDestination = true
-                    artifactRules = "fileC.txt=>subforlder"
-                    sameChainOrLastFinished()
-                }
+            buildType(ProjectB_BuildB)
+            parallel {
+                buildType(ProjectA_Subproject_BuildA)
+                buildType(ProjectA_Subproject_BuildB)
             }
-            buildType(ProjectA_Subproject_BuildB)
         }
         buildType(StartingBuild)
     }
@@ -53,13 +37,17 @@ object ProjectC : Project({
 
 object StartingBuild : BuildType({
     name = "Starting build"
-    consumes(AnotherBuild, "something.txt")
+    dependencies {
+        artifacts(AnotherBuild) {
+            cleanDestination = true
+            artifactRules = "something.txt"
+        }
+    }
 })
 
 object AnotherBuild : BuildType({
     name = "Another build"
-
-    produces("something.txt")
+    artifactRules = "something.txt"
 })
 
 object ProjectA : Project({
@@ -75,6 +63,7 @@ object ProjectA : Project({
 
 object ProjectA_BuildA : BuildType({
     name = "Build A"
+    artifactRules = "fileA.txt"
 
     vcs {
         cleanCheckout = true
@@ -89,6 +78,7 @@ object ProjectA_BuildA : BuildType({
 
 object ProjectA_BuildB : BuildType({
     name = "Build B"
+    artifactRules = "fileB.txt"
 
     vcs {
         cleanCheckout = true
@@ -103,6 +93,7 @@ object ProjectA_BuildB : BuildType({
 
 object ProjectA_BuildC : BuildType({
     name = "Build C"
+    artifactRules = "fileC.txt"
 
     vcs {
         cleanCheckout = true
@@ -124,6 +115,19 @@ object ProjectB : Project({
 
 object ProjectB_BuildA : BuildType({
     name = "Build A"
+    artifactRules = "fileC.txt"
+
+    dependencies {
+        artifacts(ProjectA_BuildA) {
+            artifactRules = "fileA.txt"
+        }
+        artifacts(ProjectA_BuildB) {
+            artifactRules = "fileB.txt"
+        }
+        artifacts(ProjectA_BuildC) {
+            artifactRules = "fileC.txt"
+        }
+    }
 })
 
 object ProjectB_BuildB : BuildType({
@@ -139,6 +143,14 @@ object ProjectA_Subproject : Project({
 
 object ProjectA_Subproject_BuildA : BuildType({
     name = "Build A"
+
+    dependencies {
+        artifacts(ProjectB_BuildA) {
+            artifactRules = "fileC.txt=>subforlder"
+            cleanDestination = true
+            sameChainOrLastFinished()
+        }
+    }
 })
 
 object ProjectA_Subproject_BuildB : BuildType({
